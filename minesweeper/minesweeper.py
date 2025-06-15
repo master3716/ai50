@@ -250,28 +250,23 @@ class MinesweeperAI():
                         if inferred not in self.knowledge and len(inferred.cells) > 0 and inferred.count >= 0:
                             inferred_sentences.append(inferred)
 
-            for sentence in self.knowledge:
-                if sentence.count == len(sentence.cells):
-                    for cell in sentence.cells.copy():
-                        self.mark_mine(cell)
-                elif sentence.count == 0:
-                    for cell in sentence.cells.copy():
-                        self.mark_safe(cell)
+           
                         
             if(inferred_sentences):
                 self.knowledge.extend(inferred_sentences)
             else:
+                for sentence in self.knowledge:
+                    new_safes |= sentence.known_safes()
+                    new_mines |= sentence.known_mines()
+
+                for cell in new_safes:
+                    self.mark_safe(cell)
+                for cell in new_mines:
+                    self.mark_mine(cell)
+                    
                 break
 
-        for sentence in self.knowledge:
-            if(sentence.count == len(sentence.cells)):
-                cells_s = sentence.cells.copy()
-                for cell in cells_s:
-                    self.mark_mine(cell)
-            elif(sentence.count == 0):
-                cells_s = sentence.cells.copy()
-                for cell in cells_s:
-                   self.mark_safe(cell)
+        
         
         
 
@@ -312,6 +307,8 @@ class MinesweeperAI():
         rand_move = (random.randint(0, self.height - 1), random.randint(0, self.width - 1))
 
         while(rand_move in bad_moves):
+             if(self.height * self.width - len(self.mines) == len(self.moves_made)):
+                 return None
              rand_move = (random.randint(0, self.height - 1), random.randint(0, self.width - 1))
 
         return rand_move
