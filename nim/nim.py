@@ -164,13 +164,11 @@ class NimAI():
         if best_index == len(actions):
             best_index -= 1
         if not epsilon:
-            print(best_index, len(actions))
             return actions[best_index]
         else:
             prob = (1 - self.epsilon) * 100
             rand = random.randint(1, 100)
             if rand <= prob:
-                print(best_index, len(actions))
                 return actions[best_index]
             else:
                 return actions[random.randint(0, len(actions) - 1)]
