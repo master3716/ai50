@@ -106,48 +106,6 @@ def load_data(path: str) -> Tuple[List[List[float]], List[float]]:
     return position, evals
 
 
-
-# def fen_to_board(fen: str) -> List[float]:
-#     piece_map = {
-#         'P': 1, 'N': 2, 'B': 3, 'R': 4, 'Q': 5, 'K': 6,
-#         'p': -1, 'n': -2, 'b': -3, 'r': -4, 'q': -5, 'k': -6
-#     }
-
-#     board = []
-#     parts = fen.split()
-#     rows = parts[0].split('/')
-
-#     for row in rows:
-#         for char in row:
-#             if char.isdigit():
-#                 board.extend([0] * int(char))
-#             else:
-#                 board.append(piece_map[char])
-
-#     # Now add extra game info
-#     turn = 1 if parts[1] == 'w' else -1
-#     board.append(turn)
-
-#     rights = parts[2]
-#     board.append(1 if 'K' in rights else 0)
-#     board.append(1 if 'Q' in rights else 0)
-#     board.append(1 if 'k' in rights else 0)
-#     board.append(1 if 'q' in rights else 0)
-
-#     ep_square = parts[3]
-#     if ep_square == '-':
-#         board.append(-1)
-#     else:
-#         file = ord(ep_square[0]) - ord('a')
-#         board.append((file / 3.5) - 1)
-
-#     # NEW: halfmove clock and fullmove number
-#     halfmove = min(int(parts[4]), 100) / 100.0
-#     fullmove = min(int(parts[5]), 200) / 200.0
-#     board.append(halfmove)
-#     board.append(fullmove)
-
-#     return board
 def fen_to_board(fen: str) -> List[float]:
     """Convert FEN to feature vector with proper normalization"""
     
@@ -215,32 +173,7 @@ def val_to_eval(val: str) -> float:
         val = (MATE_VAL - val) * sign
         return val
 
-# def get_model():
-#     model = tf.keras.models.Sequential([
-#         tf.keras.layers.Input(shape=(72,)),
 
-#         tf.keras.layers.Dense(512, activation="gelu"),
-#         tf.keras.layers.BatchNormalization(),
-#         tf.keras.layers.Dropout(0.2),
-
-#         tf.keras.layers.Dense(256, activation="gelu"),
-#         tf.keras.layers.BatchNormalization(),
-#         tf.keras.layers.Dropout(0.2),
-
-#         tf.keras.layers.Dense(128, activation="gelu"),
-#         tf.keras.layers.BatchNormalization(),
-
-#         tf.keras.layers.Dense(64, activation="gelu"),
-#         tf.keras.layers.BatchNormalization(),
-
-#         tf.keras.layers.Dense(1, activation="tanh")
-#     ])
-#     model.compile(
-#         optimizer=tf.keras.optimizers.Adam(learning_rate=5e-4),
-#         loss="huber",
-#         metrics=["mae"]
-#     )
-#     return model
 def get_model():
     """Enhanced model architecture"""
     
